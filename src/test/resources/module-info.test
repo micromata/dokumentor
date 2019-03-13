@@ -1,0 +1,9 @@
+// open module de.micromata.dokumentor {
+//   exports de.micromata.dokumentor;
+//   requires org.junit.jupiter.api;
+// }
+
+--add-reads
+  de.micromata.dokumentor=org.junit.jupiter.api
+--add-opens
+  de.micromata.dokumentor/de.micromata.dokumentor=org.junit.platform.commons
