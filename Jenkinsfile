@@ -16,15 +16,10 @@ pipeline {
 			}
 		}
 		stage("Fun") {
-			agent {
-				docker {
-					image 'fnproject/fn'
-					args '--entrypoint sh'
-				}
-			}
 			steps {
 				sh 'ls -la'
 				sh 'java -version'
+				sh 'curl -LSs https://raw.githubusercontent.com/fnproject/cli/master/install | sh'
 				sh 'fn build'
 			}
 		}
