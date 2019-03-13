@@ -22,8 +22,8 @@ pipeline {
 					args '--entrypoint sh'
 				}
 			}
-			script {
-				sh """/app/fn build"""
+			steps {
+				fn build
 			}
 		}
 	}
