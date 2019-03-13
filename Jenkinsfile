@@ -22,7 +22,9 @@ pipeline {
 				}
 			}
 			steps {
-				fn build
+				ls -la
+				java -version
+				/app/fn build
 			}
 		}
 	}
