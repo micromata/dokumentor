@@ -19,7 +19,6 @@ pipeline {
 			agent {
 				docker {
 					image 'fnproject/fn'
-					args '--entrypoint sh'
 				}
 			}
 			steps {
