@@ -16,7 +16,7 @@ pipeline {
 			}
 		}
 		stage("Fun") {
-			agent fnproject/fn
+			agent { docker 'fnproject/fn' }
 			steps {
 				fn build
 			}
