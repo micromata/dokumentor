@@ -15,5 +15,11 @@ pipeline {
 				}
 			}
 		}
+		stage("Fun") {
+			agent fnproject/fn
+			steps {
+				fn build
+			}
+		}
 	}
 }
