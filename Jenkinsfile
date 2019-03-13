@@ -18,7 +18,10 @@ pipeline {
 		stage("Fun") {
 			agent { docker 'fnproject/fn' }
 			steps {
-				fn build
+				// fn build
+				script {
+					sh """fn build"""
+				}
 			}
 		}
 	}
