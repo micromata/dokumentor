@@ -16,12 +16,14 @@ pipeline {
 			}
 		}
 		stage("Fun") {
-			agent { docker 'fnproject/fn' }
-			steps {
-				// fn build
-				script {
-					sh """fn build"""
+			agent {
+				docker {
+					image 'fnproject/fn'
+					args '--entrypoint sh'
 				}
+			}
+			script {
+				sh """/app/fn build"""
 			}
 		}
 	}
