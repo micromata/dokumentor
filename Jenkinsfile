@@ -1,6 +1,6 @@
 pipeline {
     environment {
-        REGISTRY = 'hub.micromata.de'
+        REGISTRY = 'hub.play.micromata.de'
         REGISTRY_CREDS = 'play-its-registry'
     }
     
