@@ -1,7 +1,6 @@
 pipeline {
     agent {
         docker {
-            // Java 11 with mvn and docker
             image 'mlesniak/build-11'
         }
     }
@@ -25,11 +24,10 @@ pipeline {
 		}
 		stage("Deploy") {
 			steps {
-				sh 'fn create context play --provider default --api-url https://fnproject.play.micromata.de:443 --registry https://hub.micromata.de/play-its-registry'
+				sh 'fn create context play --provider default --api-url https://fnproject.play.micromata.de:443 --registry hub.play.micromata.de'
 				sh 'fn list contexts'
 				sh 'fn use context play'
 				// only needed once, "create-if-not-exists": sh 'fn create app dokumentor-app'
-				// sh 'FN_REGISTRY=hub.play.micromata.de'
 				sh 'fn --verbose deploy --local --app dokumentor-app'
 			}
 		}
