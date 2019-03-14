@@ -1,7 +1,13 @@
-name: dokumentor/qr-code-gen
+schema_version: 20180708
+
+name: micromata/dokumentor
 version: 0.0.1
 runtime: java
+
 cmd: de.micromata.dokumentor.QRGen::create
-format: http
 timeout: 30
-path: /dokumentor
+
+triggers:
+  - name: t1
+    type: http
+    source: /dokumentor
