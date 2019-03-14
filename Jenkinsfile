@@ -25,11 +25,11 @@ pipeline {
 		}
 		stage("Deploy") {
 			steps {
-				sh 'fn create context play --api-url https://fnproject.play.micromata.de:443 --provider default --registry micromata'
+				sh 'fn create context play --api-url https://fnproject.play.micromata.de:443 --provider default'
 				sh 'fn use context play'
 				// only needed once, "create-if-not-exists": sh 'fn create app dokumentor-app'
-				sh 'FN_REGISTRY=hub.play.micromata.de'
-				sh 'fn deploy --app dokumentor-app'
+				// sh 'FN_REGISTRY=hub.play.micromata.de'
+				sh 'fn --verbose deploy --registry hub.micromata.de/play-its-registry --app dokumentor-app'
 			}
 		}
 	}
