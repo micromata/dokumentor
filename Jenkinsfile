@@ -40,7 +40,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry("https://${REGISTRY}", "${REGISTRY_CREDS}") {
-                        def image = docker.build("hub.play.micromata.de/dokumentor:0.0.2");
+                        def image = docker.image("hub.play.micromata.de/dokumentor:0.0.2");
                         image.push();
                     }
                 }
