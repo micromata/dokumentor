@@ -30,7 +30,7 @@ pipeline {
 				sh 'fn use context play'
 				// only needed once, "create-if-not-exists": sh 'fn create app dokumentor-app'
 				// sh 'FN_REGISTRY=hub.play.micromata.de'
-				sh 'fn --verbose deploy --app dokumentor-app'
+				sh 'fn --verbose deploy --local --app dokumentor-app'
 			}
 		}
 	}
