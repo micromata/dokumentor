@@ -1,22 +1,28 @@
 pipeline {
+	environment {
+		REGISTRY = 'hub.micromata.de'
+		REGISTRY_CREDS = 'play-its-registry'
+	}
+
 	agent any
+
+	options {
+		skipDefaultCheckout true
+		disableConcurrentBuilds()
+		timestamps()
+		timeout(time: 1, unit: 'HOURS')
+	}
+
 	stages {
-		stage("Parallel") {
-			parallel {
-				stage("Hello") {
-					steps {
-						echo 'Hello World'
-					}
-				}
-				stage("Bonjour") {
-					steps {
-						echo 'Bonjour Monde'
-					}
+		stage("Build") {
+			agent {
+				docker {
+					// Java 11 with mvn and docker
+					image 'mlesniak/build-11'
 				}
 			}
-		}
-		stage("Fun") {
 			steps {
+				checkout scm
 				sh 'ls -la'
 				sh 'java -version'
 				sh 'curl -LSs https://raw.githubusercontent.com/fnproject/cli/master/install | sh'
