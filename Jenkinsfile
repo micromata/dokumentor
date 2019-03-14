@@ -28,7 +28,7 @@ pipeline {
 				sh 'fn create context play --api-url https://fnproject.play.micromata.de:443 --provider default --registry micromata'
 				sh 'fn use context play'
 				// only needed once, "create-if-not-exists": sh 'fn create app dokumentor-app'
-				sh 'EXPORT FN_REGISTRY=hub.play.micromata.de'
+				sh 'FN_REGISTRY=hub.play.micromata.de'
 				sh 'fn deploy --app dokumentor-app'
 			}
 		}
