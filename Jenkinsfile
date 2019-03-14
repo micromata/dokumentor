@@ -1,14 +1,14 @@
 pipeline {
-    environment {
-        REGISTRY = 'hub.play.micromata.de'
-        REGISTRY_CREDS = 'play-its-registry'
-    }
-    
-    agent {
-        docker {
-            image 'mlesniak/build-11'
-        }
-    }
+	environment {
+		REGISTRY = 'hub.play.micromata.de'
+		REGISTRY_CREDS = 'play-its-registry'
+	}
+
+	agent {
+		docker {
+			image 'mlesniak/build-11'
+		}
+	}
 
 	options {
 		skipDefaultCheckout true
@@ -36,15 +36,15 @@ pipeline {
 				sh 'fn --verbose deploy --local --app dokumentor-app'
 			}
 		}
-        stage("Publish") {
-            steps {
-                script {
-                    docker.withRegistry("https://${REGISTRY}", "${REGISTRY_CREDS}") {
-                        def image = docker.image("hub.play.micromata.de/dokumentor:0.0.2");
-                        image.push();
-                    }
-                }
-            }
-        }
+		stage("Publish") {
+			steps {
+				script {
+					docker.withRegistry("https://${REGISTRY}", "${REGISTRY_CREDS}") {
+						def image = docker.image("hub.play.micromata.de/dokumentor:0.0.2");
+						image.push();
+					}
+				}
+			}
+		}
 	}
 }
