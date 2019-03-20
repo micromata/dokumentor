@@ -1,7 +1,7 @@
 schema_version: 20180708
 
 name: dokumentor
-version: 0.0.1
+version: 0.0.2
 runtime: java
 
 cmd: de.micromata.dokumentor.QRGen::create
