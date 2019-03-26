@@ -1,11 +1,25 @@
 package de.micromata.dokumentor;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import static org.junit.Assert.assertEquals;
 
-class DokumentorTests {
+import com.fnproject.fn.testing.FnTestingRule;
+import org.junit.Rule;
+import org.junit.Test;
+
+public class DokumentorTests {
+
+  @Rule public FnTestingRule fn = FnTestingRule.createDefault();
+
   @Test
-  void test() {
-    Assertions.assertEquals("Dokumentor", Dokumentor.class.getSimpleName());
+  public void creatorTextUsingPostMethod() {
+    fn.givenEvent()
+        .withHeader(
+            "Fn-Http-Request-Url",
+            "http://www.example.com/dokumentor?creator=txt&source=/hello.txt&mapping=VARIABLE:world")
+        .withHeader("Fn-Http-Method", "POST")
+        .enqueue();
+    fn.thenRun(Dokumentor.class, "create");
+
+    assertEquals("hello world", new String(fn.getOnlyResult().getBodyAsBytes()));
   }
 }

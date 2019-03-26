@@ -1,6 +1,7 @@
 package de.micromata.dokumentor;
 
 import com.fnproject.fn.api.httpgateway.HTTPGatewayContext;
+import de.micromata.dokumentor.text.TextCreator;
 
 public class Dokumentor implements Creator {
 
@@ -17,7 +18,7 @@ public class Dokumentor implements Creator {
         return new QRGen(context.getInvocationContext().getRuntimeContext());
       case "txt":
       case "xml":
-        // return new TextTransformer();
+        return new TextCreator();
       case "doc":
         throw new UnsupportedOperationException("Doc files aren't supported, yet");
       default:
