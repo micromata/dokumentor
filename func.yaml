@@ -1,10 +1,10 @@
 schema_version: 20180708
 
 name: dokumentor
-version: 0.0.2
+version: 0.0.3
 runtime: java
 
-cmd: de.micromata.dokumentor.QRGen::create
+cmd: de.micromata.dokumentor.Dokumentor::create
 timeout: 30
 
 triggers:

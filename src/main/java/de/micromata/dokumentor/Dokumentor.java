@@ -1,6 +1,7 @@
 package de.micromata.dokumentor;
 
 import com.fnproject.fn.api.httpgateway.HTTPGatewayContext;
+import de.micromata.dokumentor.qr.QRGen;
 import de.micromata.dokumentor.text.TextCreator;
 
 public class Dokumentor implements Creator {

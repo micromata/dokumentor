@@ -1,7 +1,8 @@
-package de.micromata.dokumentor;
+package de.micromata.dokumentor.qr;
 
 import com.fnproject.fn.api.RuntimeContext;
 import com.fnproject.fn.api.httpgateway.HTTPGatewayContext;
+import de.micromata.dokumentor.Creator;
 import java.io.ByteArrayOutputStream;
 import net.glxn.qrgen.core.image.ImageType;
 import net.glxn.qrgen.javase.QRCode;
