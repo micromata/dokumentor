@@ -6,7 +6,7 @@ import java.io.ByteArrayOutputStream;
 import net.glxn.qrgen.core.image.ImageType;
 import net.glxn.qrgen.javase.QRCode;
 
-public class QRGen {
+public class QRGen implements Creator {
   private final String defaultFormat;
 
   public QRGen(RuntimeContext ctx) {
