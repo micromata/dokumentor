@@ -2,16 +2,12 @@ package de.micromata.dokumentor.text;
 
 import com.fnproject.fn.api.httpgateway.HTTPGatewayContext;
 import de.micromata.dokumentor.Creator;
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
-import java.util.Map;
 
 public class TextCreator implements Creator {
 
