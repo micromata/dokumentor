@@ -17,46 +17,40 @@ public class TextCreator implements Creator {
 
   private final Charset charset = StandardCharsets.UTF_8;
 
+  private String readContent(URI uri) {
+    try {
+      if (!uri.isAbsolute()) {
+        var resource = TextCreator.class.getResource("/" + uri.toString());
+        if (resource == null) {
+          return "Resource " + uri + " not found!";
+        }
+        var path = Path.of(resource.toURI());
+        return Files.readString(path, charset);
+      }
+      try (var stream = uri.toURL().openStream()) {
+        return new String(stream.readAllBytes(), charset);
+      }
+    } catch (Exception e) {
+      return "Error reading content from " + uri + " : " + e;
+    }
+  }
+
   @Override
   public byte[] create(HTTPGatewayContext context) {
-    URI source =
-        URI.create(context.getQueryParameters().get("source").orElseThrow(RuntimeException::new));
+    var source = context.getQueryParameters().get("source").orElse(null);
+    var content = source == null ? "No source argument supplied!" : readContent(URI.create(source));
 
-    System.out.println("source = " + source);
-    Path path;
-    try {
-      path = Path.of(source);
-    } catch (IllegalArgumentException e) {
-      URL url = TextCreator.class.getResource(source.toString());
-      if (url == null) {
-        throw new RuntimeException("source not found");
-      }
-      try {
-        path = Path.of(url.toURI());
-      } catch (URISyntaxException ex) {
-        throw new RuntimeException("", ex);
-      }
-    }
-
-    Map<String, String> mapping = new HashMap<>();
-    for (String line : context.getQueryParameters().getValues("mapping")) {
-      String[] split = line.split(":");
+    var mapping = new HashMap<String, String>();
+    for (var line : context.getQueryParameters().getValues("mapping")) {
+      var split = line.split(":");
       mapping.put(split[0], split[1]);
     }
 
-    System.out.println("mapping = " + mapping);
-
-    try {
-      String content = Files.readString(path, charset);
-      for (Map.Entry<String, String> entry : mapping.entrySet()) {
-        content = content.replace(entry.getKey(), entry.getValue());
-      }
-
-      context.setResponseHeader(
-          "Content-Type", "text/plain;charset=" + charset.name().toLowerCase());
-      return content.getBytes(charset);
-    } catch (IOException e) {
-      throw new RuntimeException("" + e.getMessage(), e);
+    for (var entry : mapping.entrySet()) {
+      content = content.replace(entry.getKey(), entry.getValue());
     }
+
+    context.setResponseHeader("Content-Type", "text/plain;charset=" + charset.name().toLowerCase());
+    return content.getBytes(charset);
   }
 }
