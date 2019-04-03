@@ -1,7 +1,6 @@
 package de.micromata.dokumentor;
 
 import com.fnproject.fn.api.httpgateway.HTTPGatewayContext;
-import de.micromata.dokumentor.qr.QRGen;
 import de.micromata.dokumentor.text.TextCreator;
 import de.micromata.dokumentor.xml.XmlCreator;
 
@@ -16,8 +15,6 @@ public class Dokumentor implements Creator {
 
   private Creator createCreator(HTTPGatewayContext context, String key) {
     switch (key.toLowerCase()) {
-      case "qr":
-        return new QRGen(context.getInvocationContext().getRuntimeContext());
       case "txt":
         return new TextCreator();
       case "xml":
