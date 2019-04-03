@@ -7,18 +7,33 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class TextCreator implements Creator {
 
   private final Charset charset = StandardCharsets.UTF_8;
 
-  private String readContent(URI uri) {
+  String readContent(URI uri) {
     try {
       if (!uri.isAbsolute()) {
         var resource = TextCreator.class.getResource("/" + uri.toString());
         if (resource == null) {
-          return "Resource " + uri + " not found!";
+          var message = new StringBuilder();
+          message.append("Resource not found!\n");
+          message.append("\n");
+          message.append(" uri: ").append(uri).append("\n");
+          message.append("\n");
+          message.append("Files\n\n");
+          var files = Path.of(".").toFile().listFiles();
+          if (files != null) {
+            Arrays.stream(files).forEach(f -> message.append(f).append("\n"));
+          }
+          message.append("\n");
+          message.append("System properties\n\n");
+          System.getProperties()
+              .forEach((key, value) -> message.append(key).append("=").append(value).append("\n"));
+          return message.toString();
         }
         var path = Path.of(resource.toURI());
         return Files.readString(path, charset);
