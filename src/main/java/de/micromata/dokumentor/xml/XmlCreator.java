@@ -13,7 +13,8 @@ public class XmlCreator implements Creator {
 
   private final Charset charset = StandardCharsets.UTF_8;
 
-  private String readContent(URI uri) {
+  // Returns Path as String
+  private String getPath(URI uri) {
     try {
       if (!uri.isAbsolute()) {
         var resource = XmlCreator.class.getResource("/" + uri.toString());
@@ -21,11 +22,9 @@ public class XmlCreator implements Creator {
           return "Resource " + uri + " not found!";
         }
         var path = Path.of(resource.toURI());
-        return Files.readString(path, charset);
+        return path.toString();
       }
-      try (var stream = uri.toURL().openStream()) {
-        return new String(stream.readAllBytes(), charset);
-      }
+      return "Absolut Uri are not supported!";
     } catch (Exception e) {
       return "Error reading content from " + uri + " : " + e;
     }
@@ -33,20 +32,25 @@ public class XmlCreator implements Creator {
 
   @Override
   public byte[] create(HTTPGatewayContext context) {
-    var source = context.getQueryParameters().get("source").orElse(null);
-    var content = source == null ? "No source argument supplied!" : readContent(URI.create(source));
+    try {
+      var source = context.getQueryParameters().get("source").orElse(null);
+      var path = source == null ? "No source argument supplied!" : getPath(URI.create(source));
 
-    var mapping = new HashMap<String, String>();
-    for (var line : context.getQueryParameters().getValues("mapping")) {
-      var split = line.split(":");
-      mapping.put(split[0], split[1]);
+      var mapping = new HashMap<String, String>();
+      for (var line : context.getQueryParameters().getValues("mapping")) {
+        var split = line.split(":");
+        mapping.put(split[0], split[1]);
+      }
+
+      // Todo: Mirco Nuhn - XmlEditingservice implementieren (y) mapping übergeben
+
+      context.setResponseHeader("Content-Type", "application/octet-stream");
+      // Todo: Mirco Nuhn -  return ergebnis ( path -> to return )
+      return Files.readAllBytes(Path.of(path));
+    } catch (Exception e) {
+      context.setResponseHeader(
+          "Content-Type", "text/plain;charset=" + charset.name().toLowerCase());
+      return ("XML Creator failed: " + e).getBytes(charset);
     }
-
-    for (var entry : mapping.entrySet()) {
-      content = content.replace(entry.getKey(), entry.getValue());
-    }
-
-    context.setResponseHeader("Content-Type", "text/plain;charset=" + charset.name().toLowerCase());
-    return content.getBytes(charset);
   }
 }

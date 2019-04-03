@@ -20,6 +20,6 @@ public class XmlCreatorTests {
         .enqueue();
     fn.thenRun(Dokumentor.class, "create");
 
-    assertEquals("hello world", new String(fn.getOnlyResult().getBodyAsBytes()));
+    assertEquals("hello VARIABLE", new String(fn.getOnlyResult().getBodyAsBytes()));
   }
 }
