@@ -3,6 +3,7 @@ package de.micromata.dokumentor;
 import com.fnproject.fn.api.httpgateway.HTTPGatewayContext;
 import de.micromata.dokumentor.qr.QRGen;
 import de.micromata.dokumentor.text.TextCreator;
+import de.micromata.dokumentor.xml.XmlCreator;
 
 public class Dokumentor implements Creator {
 
@@ -18,8 +19,9 @@ public class Dokumentor implements Creator {
       case "qr":
         return new QRGen(context.getInvocationContext().getRuntimeContext());
       case "txt":
-      case "xml":
         return new TextCreator();
+      case "xml":
+        return new XmlCreator();
       case "doc":
         throw new UnsupportedOperationException("Doc files aren't supported, yet");
       default:
