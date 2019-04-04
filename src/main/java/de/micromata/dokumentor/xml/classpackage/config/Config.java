@@ -37,20 +37,20 @@ public class Config
     }
   }
 
-  // For Mirco Local Use
-  private static final String PATH_MAIN = "/Users/mnuhn/Documents/Repositories/Documentgenerator/";
+  // For Local Use
+  private static final String PATH_MAIN = "/Users/mnuhn/Documents/Repositories/dokumentor/dokumentor/src/test/resources/";
 
   // For Server Use
   // private static final String PATH_MAIN = "/home/ag/Documentgenerator/";
 
   private static final String PATH_TEMP = PATH_MAIN + "erzeugnisse/";
   private static final String PATH_SOURCE =
-      PATH_MAIN + "repo_angebotsvorlagen-dhl/angebotsvorlagen-dhl/";
+      PATH_MAIN;
   private static final String PATH_ID = PATH_MAIN + "id_rsa/";
 
   private static final String PATH_FOLDER_TO_UNZIP = PATH_TEMP + "uncompressed";
   // All or Main Service
-  private static final String TEMPLATE = PATH_SOURCE + "templates/template_";
+  private static final String TEMPLATE = PATH_SOURCE + "templates/";
   private static final String ATTACHMENTS = PATH_SOURCE + "attachments";
   private static final String EXPORTFILENAME = "export.json";
 

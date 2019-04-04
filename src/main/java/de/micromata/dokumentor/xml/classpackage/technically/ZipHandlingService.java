@@ -29,9 +29,7 @@ public class ZipHandlingService {
 
     File file1 =
         new File(
-            zipHandlingServiceConfig.getPathOfStorageDirectory()
-                + fileToUnzip
-                + zipHandlingServiceConfig.getFileExtensionTypeTo());
+                zipHandlingServiceConfig.getPathOfStorageDirectory() + "test-project/" + fileToUnzip + ".zip");
 
     String documentName = FilenameUtils.removeExtension(file1.getName());
 
@@ -107,8 +105,8 @@ public class ZipHandlingService {
   }
 
   /** */
-  public ZipHandlingService(final ZipHandlingServiceConfig zipHanlingServiceConfig) {
-    this.zipHandlingServiceConfig = zipHanlingServiceConfig;
+  public ZipHandlingService(final ZipHandlingServiceConfig zipHandlingServiceConfig) {
+    this.zipHandlingServiceConfig = zipHandlingServiceConfig;
   }
 
   /** Baut den Path für die ZIP-Datei zusammen und triggerd zipFolder() */

@@ -37,7 +37,7 @@ public class FileService {
             + type
             + fileServiceConfig.getFileExtensionTypeFrom(),
         fileServiceConfig.getPathOfStorageDirectory()
-            + title
+            + "test-project/" + title
             + fileServiceConfig.getFileExtensionTypeTo());
   }
 

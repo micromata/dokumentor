@@ -4,6 +4,14 @@ import de.micromata.dokumentor.xml.classpackage.config.XmlEditingServiceConfig;
 import de.micromata.dokumentor.xml.classpackage.domain.Angebot;
 import de.micromata.dokumentor.xml.classpackage.domain.Einzelvertrag;
 import de.micromata.dokumentor.xml.classpackage.domain.NumberAsWord;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -12,15 +20,9 @@ import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 
 /** Created by Mirco Nuhn - Micromata Gmbh */
 public class XmlEditingService {
@@ -31,6 +33,31 @@ public class XmlEditingService {
   private String tableProportion;
   private String tableLeistungsumfang;
   private String tableProjektmitarbeiter;
+
+  public void editTestDokument(HashMap<String,String> mapping) throws IOException {
+    List<String> fileNamesList = new ArrayList();
+    Files.newDirectoryStream(
+            Paths.get(xmleditingserviceconfig.getPathFolderToUnzip()),
+            path -> path.toString().endsWith(".xml"))
+            .forEach(filePath -> fileNamesList.add(filePath.toString()));
+
+    String xmlFilePath = xmleditingserviceconfig.getPathWordDocumentXml();
+    System.out.println(xmlFilePath);
+    String xmlString = getXML(xmlFilePath);
+    xmlString = replaceTestDokument(xmlString, mapping);
+    safeToXMLFile(xmlString, xmlFilePath);
+  }
+
+  public String replaceTestDokument(String xmlAsString, HashMap mapping){
+
+    System.out.println("ANFANG ----------------------");
+
+    System.out.println(mapping);
+
+    System.out.println("ENDE ------------------------");
+
+    return "";
+  }
 
   /** */
   public void editEinzelvertrag(Einzelvertrag ev, NumberAsWord naw) throws IOException {
