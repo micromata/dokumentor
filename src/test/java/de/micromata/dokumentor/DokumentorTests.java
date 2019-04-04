@@ -9,10 +9,12 @@ import org.junit.Test;
 
 public class DokumentorTests {
 
-  @Rule public FnTestingRule fn = FnTestingRule.createDefault();
+  @Rule
+  public FnTestingRule fn =
+      FnTestingRule.createDefault().addSharedClassPrefix("org.w3c").addSharedClassPrefix("org.xml");
 
   @Test
-  public void creatorTextUsingPostMethod() {
+  public void txtHelloWorld() {
     fn.givenEvent()
         .withHeader(
             "Fn-Http-Request-Url",
@@ -25,7 +27,7 @@ public class DokumentorTests {
   }
 
   @Test
-  public void creatorTextUsingExternalResource() {
+  public void txtApacheLicense() {
     fn.givenEvent()
         .withHeader(
             "Fn-Http-Request-Url",

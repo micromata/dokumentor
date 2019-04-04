@@ -9,7 +9,7 @@
     <version>1.0.0-SNAPSHOT</version>
 
     <name>dokumentor</name>
-    <description>Raktajino - JUnit Extensions, served steamed or iced</description>
+    <description>Document Generator</description>
     <url>https://github.com/micromata/dokumentor</url>
     <scm>
         <url>https://github.com/micromata/dokumentor.git</url>
@@ -20,7 +20,7 @@
         <maven.compiler.release>11</maven.compiler.release>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <fdk.version>1.0.85</fdk.version>
+        <fdk.version>1.0.86</fdk.version>
         <junit.jupiter.version>5.4.1</junit.jupiter.version>
     </properties>
 
@@ -61,6 +61,11 @@
             <groupId>com.fnproject.fn</groupId>
             <artifactId>api</artifactId>
             <version>${fdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>4.0.1</version>
         </dependency>
         <!-- TEST -->
         <!-- Use Jupiter API for writing tests. -->

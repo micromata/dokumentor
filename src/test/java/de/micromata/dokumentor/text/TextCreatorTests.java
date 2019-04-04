@@ -1,14 +1,14 @@
 package de.micromata.dokumentor.text;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URI;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class TextCreatorTests {
+class TextCreatorTests {
 
   @Test
-  public void creatorTextUsingPostMethod() {
+  void creatorTextUsingPostMethod() {
     var creator = new TextCreator();
     var actual = creator.readContent(URI.create("does-not-exists"));
     assertTrue(actual.contains("Resource not found!"));
