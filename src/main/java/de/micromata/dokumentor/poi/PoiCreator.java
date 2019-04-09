@@ -9,6 +9,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -68,7 +70,8 @@ public class PoiCreator implements Creator {
     }
 
     try {
-      var bytes = readAllBytes(URI.create(source));
+      var uri = URI.create(source);
+      var bytes = readAllBytes(uri);
       var input = new ByteArrayInputStream(bytes);
       var document = new XWPFDocument(input);
 
@@ -83,7 +86,11 @@ public class PoiCreator implements Creator {
       var result = new ByteArrayOutputStream();
       document.write(result);
 
+      var filename =
+          LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss"))
+              + extractFileName(uri);
       context.setResponseHeader("Content-Type", "application/octet-stream");
+      context.setResponseHeader("Content-Disposition", "attachment; filename=" + filename);
       return result.toByteArray();
     } catch (Exception e) {
       e.printStackTrace();
@@ -138,5 +145,11 @@ public class PoiCreator implements Creator {
         r.setText(text, 0);
       }
     }
+  }
+
+  /** Extract last path element from the supplied uri. */
+  private String extractFileName(URI uri) {
+    var path = uri.getPath(); // strip query and fragment elements
+    return path.substring(path.lastIndexOf('/') + 1);
   }
 }
