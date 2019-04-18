@@ -2,8 +2,11 @@ package de.micromata.dokumentor.poi;
 
 import com.fnproject.fn.api.httpgateway.HTTPGatewayContext;
 import de.micromata.dokumentor.Creator;
+import de.micromata.dokumentor.Helper;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -14,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.spi.ToolProvider;
 import org.apache.poi.xwpf.usermodel.BodyElementType;
 import org.apache.poi.xwpf.usermodel.IBodyElement;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -30,33 +34,46 @@ public class PoiCreator implements Creator {
 
   byte[] readAllBytes(URI uri) {
     try {
-      if (!uri.isAbsolute()) {
-        var resource = PoiCreator.class.getResource("/" + uri.toString());
-        if (resource == null) {
-          var message = new StringBuilder();
-          message.append("Resource not found!\n");
-          message.append("\n");
-          message.append(" uri: ").append(uri).append("\n");
-          message.append("\n");
-          message.append("Files\n\n");
-          var files = Path.of(".").toFile().listFiles();
-          if (files != null) {
-            Arrays.stream(files).forEach(f -> message.append(f).append("\n"));
-          }
-          message.append("\n");
-          message.append("System properties\n\n");
-          System.getProperties()
-              .forEach((key, value) -> message.append(key).append("=").append(value).append("\n"));
-          throw new IllegalArgumentException(message.toString());
-        }
-        var path = Path.of(resource.toURI());
-        return Files.readAllBytes(path);
-      }
       var bytes = new ByteArrayOutputStream();
       try (var stream = uri.toURL().openStream()) {
         stream.transferTo(bytes);
       }
       return bytes.toByteArray();
+    } catch (Exception e) {
+      // fall-through
+    }
+    try {
+      var resource = PoiCreator.class.getResource(uri.toString());
+      if (resource == null) {
+        var message = new StringBuilder();
+        var jar = Helper.findJarPath(getClass());
+        message.append("Resource not found!\n");
+        message.append("\n");
+        message.append(" uri: ").append(uri).append("\n");
+        message.append(" jar: ").append(jar).append("\n");
+        message.append("\n");
+        message.append("Files\n\n");
+        var files = Path.of(".").toFile().listFiles();
+        if (files != null) {
+          Arrays.stream(files).forEach(f -> message.append(f).append("\n"));
+        }
+        if (jar.isPresent()) {
+          message.append("\n");
+          message.append("Jar listing\n\n");
+          var stringWriter = new StringWriter();
+          var writer = new PrintWriter(stringWriter);
+          var tool = ToolProvider.findFirst("jar").orElseThrow();
+          tool.run(writer, writer, "--list", "--file", jar.get().toString());
+          stringWriter.toString().lines().forEach(line -> message.append(line).append("\n"));
+        }
+        message.append("\n");
+        message.append("System properties\n\n");
+        System.getProperties()
+            .forEach((key, value) -> message.append(key).append("=").append(value).append("\n"));
+        throw new IllegalArgumentException(message.toString());
+      }
+      var path = Path.of(resource.toURI());
+      return Files.readAllBytes(path);
     } catch (Exception e) {
       throw new IllegalArgumentException("Error reading content from " + uri + " : " + e, e);
     }

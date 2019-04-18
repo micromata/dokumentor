@@ -18,12 +18,14 @@ public class DokumentorTests {
     fn.givenEvent()
         .withHeader(
             "Fn-Http-Request-Url",
-            "http://www.example.com/dokumentor?creator=txt&source=hello.txt&mapping=VARIABLE:world")
+            "http://www.example.com/dokumentor?creator=txt&source=hello2.txt&mapping=VARIABLE:earth&mapping=PLANET2:mars")
         .withHeader("Fn-Http-Method", "GET")
         .enqueue();
     fn.thenRun(Dokumentor.class, "create");
 
-    assertEquals("hello world", new String(fn.getOnlyResult().getBodyAsBytes()));
+    String[] actual = new String(fn.getOnlyResult().getBodyAsBytes()).split("\\R");
+    assertEquals("hello earth", actual[0]);
+    assertEquals("hello mars", actual[1]);
   }
 
   @Test
