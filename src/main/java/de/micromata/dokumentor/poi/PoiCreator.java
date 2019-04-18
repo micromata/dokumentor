@@ -34,6 +34,13 @@ public class PoiCreator implements Creator {
 
   byte[] readAllBytes(URI uri) {
     try {
+      var path = Path.of(uri);
+      return Files.readAllBytes(path);
+    } catch (Exception e) {
+      // fall-through
+    }
+
+    try {
       var bytes = new ByteArrayOutputStream();
       try (var stream = uri.toURL().openStream()) {
         stream.transferTo(bytes);
@@ -42,6 +49,7 @@ public class PoiCreator implements Creator {
     } catch (Exception e) {
       // fall-through
     }
+
     try {
       var resource = PoiCreator.class.getResource(uri.toString());
       if (resource == null) {
@@ -72,8 +80,11 @@ public class PoiCreator implements Creator {
             .forEach((key, value) -> message.append(key).append("=").append(value).append("\n"));
         throw new IllegalArgumentException(message.toString());
       }
-      var path = Path.of(resource.toURI());
-      return Files.readAllBytes(path);
+      var bytes = new ByteArrayOutputStream();
+      try (var stream = PoiCreator.class.getResourceAsStream(uri.toString())) {
+        stream.transferTo(bytes);
+      }
+      return bytes.toByteArray();
     } catch (Exception e) {
       throw new IllegalArgumentException("Error reading content from " + uri + " : " + e, e);
     }
