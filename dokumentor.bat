@@ -1,0 +1,1 @@
+java -jar target\dokumentor-1.2.2-jar-with-dependencies.jar %*
