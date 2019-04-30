@@ -4,13 +4,19 @@ import com.fnproject.fn.api.httpgateway.HTTPGatewayContext;
 import de.micromata.dokumentor.poi.PoiCreator;
 import de.micromata.dokumentor.text.TextCreator;
 import de.micromata.dokumentor.xml.XmlCreator;
+import java.util.List;
 
 public class Dokumentor implements Creator {
 
+  public static void main(String[] args) {
+    System.out.println("Dokumentor");
+    System.out.println(" args: " + List.of(args));
+  }
+
   @Override
   public byte[] create(HTTPGatewayContext context) {
-    String key = context.getQueryParameters().get("creator").orElse("txt");
-    Creator creator = createCreator(key);
+    var key = context.getQueryParameters().get("creator").orElse("txt");
+    var creator = createCreator(key);
     return creator.create(context);
   }
 
